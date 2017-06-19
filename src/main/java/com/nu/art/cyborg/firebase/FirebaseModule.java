@@ -50,7 +50,7 @@ public class FirebaseModule
 	protected void init() {
 		PreferencesModule preferences = getModule(PreferencesModule.class);
 		token = preferences.new StringPreference("firebase-token", null);
-		Firebase.setAndroidContext(getApplication());
+		Firebase.setAndroidContext(getApplicationContext());
 	}
 
 	public <Value> void getValueOneshot(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
