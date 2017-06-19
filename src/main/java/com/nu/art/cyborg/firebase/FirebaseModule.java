@@ -53,6 +53,31 @@ public class FirebaseModule
 		Firebase.setAndroidContext(getApplicationContext());
 	}
 
+	public <Value> void monitorTree(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
+		String url = key.composeUrl();
+		Firebase firebase = new Firebase(url);
+		logDebug("Getting value from firebase: " + url);
+
+		firebase.addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				if (!dataSnapshot.exists()) {
+					listener.onResponse(null);
+					return;
+				}
+
+				listener.onResponse(dataSnapshot.getValue(key.valueClass));
+			}
+
+			@Override
+			public void onCancelled(FirebaseError firebaseError) {
+				logError("Error: ", firebaseError.toException());
+				listener.onError(firebaseError.toException());
+			}
+		});
+
+	}
+
 	public <Value> void getValueOneshot(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
 		String url = key.composeUrl();
 		Firebase firebase = new Firebase(url);
