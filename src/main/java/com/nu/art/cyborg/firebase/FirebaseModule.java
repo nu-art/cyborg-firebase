@@ -7,6 +7,7 @@ import com.firebase.client.FirebaseException;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 import com.nu.art.core.generics.Processor;
 import com.nu.art.cyborg.annotations.ModuleDescriptor;
 import com.nu.art.cyborg.core.CyborgBuilder;
@@ -17,6 +18,8 @@ import com.nu.art.cyborg.core.modules.PreferencesModule.StringPreference;
 @ModuleDescriptor
 public class FirebaseModule
 		extends CyborgModule {
+
+	private final Gson gson = new Gson();
 
 	private StringPreference token;
 
@@ -36,6 +39,11 @@ public class FirebaseModule
 
 		public final String composeUrl() {
 			return "https://" + dbName + ".firebaseio.com/" + pathToResource;
+		}
+
+		@Override
+		public String toString() {
+			return composeUrl() + " <> " + valueClass.getSimpleName();
 		}
 	}
 
@@ -66,7 +74,12 @@ public class FirebaseModule
 					return;
 				}
 
-				listener.onResponse(dataSnapshot.getValue(key.valueClass));
+				try {
+					listener.onResponse(gson.fromJson(gson.toJson(dataSnapshot.getValue()), key.valueClass));
+				} catch (RuntimeException e) {
+					logError("Error extracting value for key: " + key, e);
+					throw e;
+				}
 			}
 
 			@Override
@@ -75,7 +88,6 @@ public class FirebaseModule
 				listener.onError(firebaseError.toException());
 			}
 		});
-
 	}
 
 	public <Value> void getValueOneshot(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
@@ -91,7 +103,12 @@ public class FirebaseModule
 					return;
 				}
 
-				listener.onResponse(dataSnapshot.getValue(key.valueClass));
+				try {
+					listener.onResponse(dataSnapshot.getValue(key.valueClass));
+				} catch (RuntimeException e) {
+					logError("Error extracting value for key: " + key, e);
+					throw e;
+				}
 			}
 
 			@Override
