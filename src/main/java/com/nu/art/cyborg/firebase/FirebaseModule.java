@@ -69,6 +69,7 @@ public class FirebaseModule
 		firebase.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
+				logDebug("Got value for key: " + key);
 				if (!dataSnapshot.exists()) {
 					listener.onResponse(null);
 					return;
@@ -98,6 +99,7 @@ public class FirebaseModule
 		firebase.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
+				logDebug("Got value for key: " + key);
 				if (!dataSnapshot.exists()) {
 					listener.onResponse(null);
 					return;
