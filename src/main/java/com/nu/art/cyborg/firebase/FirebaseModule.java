@@ -25,16 +25,26 @@ public class FirebaseModule
 
 	public static class FirebaseKeyDB<Value> {
 
-		String dbName;
+		final String dbName;
 
-		String pathToResource;
+		final String pathToResource;
 
-		Class<Value> valueClass;
+		final Class<Value> valueClass;
+
+		private boolean listening;
 
 		public FirebaseKeyDB(String dbName, String pathToResource, Class<Value> valueClass) {
 			this.dbName = dbName;
 			this.pathToResource = pathToResource;
 			this.valueClass = valueClass;
+		}
+
+		public void setListening(boolean listening) {
+			this.listening = listening;
+		}
+
+		boolean isListening() {
+			return listening;
 		}
 
 		public final String composeUrl() {
@@ -61,10 +71,14 @@ public class FirebaseModule
 		Firebase.setAndroidContext(getApplicationContext());
 	}
 
-	public <Value> void monitorTree(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
+	public synchronized <Value> void monitorTree(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
+		if (key.isListening())
+			return;
+
 		String url = key.composeUrl();
 		Firebase firebase = new Firebase(url);
 		logDebug("Getting value from firebase: " + url);
+		key.setListening(true);
 
 		firebase.addValueEventListener(new ValueEventListener() {
 			@Override
@@ -76,7 +90,7 @@ public class FirebaseModule
 				}
 
 				try {
-					listener.onResponse(gson.fromJson(gson.toJson(dataSnapshot.getValue()), key.valueClass));
+					listener.onResponse(convertValueWithGson(dataSnapshot, key));
 				} catch (RuntimeException e) {
 					logError("Error extracting value for key: " + key, e);
 					throw e;
@@ -90,6 +104,8 @@ public class FirebaseModule
 			}
 		});
 	}
+
+	private <Value> Value convertValueWithGson(DataSnapshot dataSnapshot, FirebaseKeyDB<Value> key) {return gson.fromJson(gson.toJson(dataSnapshot.getValue()), key.valueClass);}
 
 	public <Value> void getValueOneshot(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
 		String url = key.composeUrl();
@@ -106,7 +122,7 @@ public class FirebaseModule
 				}
 
 				try {
-					listener.onResponse(dataSnapshot.getValue(key.valueClass));
+					listener.onResponse(convertValueWithGson(dataSnapshot, key));
 				} catch (RuntimeException e) {
 					logError("Error extracting value for key: " + key, e);
 					throw e;
