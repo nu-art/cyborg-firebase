@@ -2,6 +2,7 @@ package com.nu.art.cyborg.firebase;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.Firebase.CompletionListener;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.FirebaseException;
 import com.firebase.client.ValueEventListener;
@@ -57,9 +58,16 @@ public class FirebaseModule
 		}
 	}
 
-	public interface FirebaseResponseListener<Value> {
+	public interface OnValueReceivedListener<Value> {
 
 		void onResponse(Value value);
+
+		void onError(FirebaseException error);
+	}
+
+	public interface OnValueUpdatedListener {
+
+		void onCompleted(FirebaseKeyDB key);
 
 		void onError(FirebaseException error);
 	}
@@ -71,7 +79,7 @@ public class FirebaseModule
 		Firebase.setAndroidContext(getApplicationContext());
 	}
 
-	public synchronized <Value> void monitorTree(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
+	public synchronized <Value> void monitorTree(final FirebaseKeyDB<Value> key, final OnValueReceivedListener<Value> listener) {
 		if (key.isListening())
 			return;
 
@@ -105,13 +113,15 @@ public class FirebaseModule
 		});
 	}
 
-	private <Value> Value convertValueWithGson(DataSnapshot dataSnapshot, FirebaseKeyDB<Value> key) {return gson.fromJson(gson.toJson(dataSnapshot.getValue()), key.valueClass);}
+	private <Value> Value convertValueWithGson(DataSnapshot dataSnapshot, FirebaseKeyDB<Value> key) {
+		return gson.fromJson(gson.toJson(dataSnapshot.getValue()), key.valueClass);
+	}
 
-	public <Value> void getValueOneshot(final FirebaseKeyDB<Value> key, final FirebaseResponseListener<Value> listener) {
+	public <Value> void getValueOneshot(final FirebaseKeyDB<Value> key, final OnValueReceivedListener<Value> listener) {
 		String url = key.composeUrl();
 		Firebase firebase = new Firebase(url);
-		logDebug("Getting value from firebase: " + url);
 
+		logDebug("Getting value from firebase: " + url);
 		firebase.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
@@ -133,6 +143,22 @@ public class FirebaseModule
 			public void onCancelled(FirebaseError firebaseError) {
 				logError("Error: ", firebaseError.toException());
 				listener.onError(firebaseError.toException());
+			}
+		});
+	}
+
+	public <Value> void updateValue(final FirebaseKeyDB<Value> key, Value instance, final OnValueUpdatedListener listener) {
+		String url = key.composeUrl();
+		Firebase firebase = new Firebase(url);
+		firebase.setValue(instance, new CompletionListener() {
+			@Override
+			public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+				if (firebaseError != null) {
+					listener.onError(firebaseError.toException());
+					return;
+				}
+
+				listener.onCompleted(key);
 			}
 		});
 	}
