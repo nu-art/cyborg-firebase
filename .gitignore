@@ -1,12 +1,9 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
 .DS_Store
-uinfra/build
-uinfra/build/intermediates/*
-uinfra/uinfra.iml
-UInfraProject.iml
-uinfra/gen/com/widdit/uinfra/BuildConfig.java
-.idea/
-build/
+/build
+/captures
+/.idea
+gradle
 *.iml
+target
