@@ -5,6 +5,10 @@ android {
     apply from: '../dev-tools/gradle/common-cyborg-lib.gradle'
 }
 
+if (project.hasProperty("configureUploadAndroidLibArtifact")) {
+    configureUploadAndroidLibArtifact("com.nu-art-software.cyborg", "nu-art/${name}");
+}
+
 dependencies {
 
     compile(resolveDependency('cyborg-core', 'com.nu-art-software.cyborg', "${DEFAULT_DEPENDENCY_VERSION}"))
