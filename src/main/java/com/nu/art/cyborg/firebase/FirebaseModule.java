@@ -137,14 +137,20 @@ public class FirebaseModule
 	}
 
 	public <Value> void getValueOneshot(final FirebaseKeyDB<Value> key, final OnValueReceivedListener<Value> listener) {
+		if (key.isListening())
+			return;
+
 		String url = key.composeUrl();
 		Firebase firebase = new Firebase(url);
+		key.setListening(true);
 
 		logDebug("Getting value from firebase: " + url);
 		firebase.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				logDebug("Got value for key: " + key);
+				key.setListening(false);
+
 				if (!dataSnapshot.exists()) {
 					listener.onResponse(null);
 					return;
@@ -160,6 +166,7 @@ public class FirebaseModule
 
 			@Override
 			public void onCancelled(FirebaseError firebaseError) {
+				key.setListening(false);
 				logError("Error: ", firebaseError.toException());
 				listener.onError(firebaseError.toException());
 			}
