@@ -35,6 +35,8 @@ import com.nu.art.cyborg.core.CyborgModule;
 import com.nu.art.cyborg.core.modules.PreferencesModule;
 import com.nu.art.cyborg.core.modules.PreferencesModule.StringPreference;
 
+import java.util.HashMap;
+
 @ModuleDescriptor
 public class FirebaseModule
 		extends CyborgModule {
@@ -176,7 +178,7 @@ public class FirebaseModule
 	public <Value> void updateValue(final FirebaseKeyDB<Value> key, Value instance, final OnValueUpdatedListener listener) {
 		String url = key.composeUrl();
 		Firebase firebase = new Firebase(url);
-		firebase.setValue(instance, new CompletionListener() {
+		firebase.setValue(gson.fromJson(gson.toJson(instance), HashMap.class), new CompletionListener() {
 			@Override
 			public void onComplete(FirebaseError firebaseError, Firebase firebase) {
 				if (firebaseError != null) {
