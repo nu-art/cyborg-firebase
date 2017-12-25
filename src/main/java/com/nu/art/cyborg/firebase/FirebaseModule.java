@@ -197,7 +197,7 @@ public class FirebaseModule
 	}
 
 	private void dispatchFirebaseMessageReceived(final RemoteMessage message) {
-		dispatchEvent("Dispatched firebase message", FirebaseNotificationListener.class, new Processor<FirebaseNotificationListener>() {
+		dispatchEvent("Dispatched firebase message", new Processor<FirebaseNotificationListener>() {
 			@Override
 			public void process(FirebaseNotificationListener listener) {
 				listener.onPushMessageReceived(message);
@@ -207,7 +207,7 @@ public class FirebaseModule
 
 	private void onTokenUpdated(String token) {
 		this.token.set(token);
-		dispatchModuleEvent("Firebase token updated", FirebaseTokenListener.class, new Processor<FirebaseTokenListener>() {
+		dispatchModuleEvent("Firebase token updated", new Processor<FirebaseTokenListener>() {
 			@Override
 			public void process(FirebaseTokenListener listener) {
 				listener.onFirebaseTokenUpdated();
