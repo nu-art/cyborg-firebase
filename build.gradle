@@ -28,13 +28,13 @@ if (project.hasProperty("configureUploadAndroidLibArtifact")) {
 }
 
 dependencies {
-
     _implementation(resolveDependency('cyborg-core', 'com.nu-art-software.cyborg', "${NU_ART_VERSION}"))
-    _implementation 'com.google.firebase:firebase-core:11.8.0'
-    _implementation 'com.google.firebase:firebase-messaging:11.8.0'
-    _implementation 'com.google.firebase:firebase-database:11.8.0'
-    _implementation 'com.google.firebase:firebase-storage:11.8.0'
-    _implementation 'com.google.firebase:firebase-auth:11.8.0'
-    _implementation 'com.firebase:firebase-client-android:2.5.2'
-    _implementation 'com.google.code.gson:gson:2.8.0'
+    _implementation "com.google.code.gson:gson:${GSON_VERSION}"
+
+    _api "com.google.firebase:firebase-core:${GMS_VERSION}"
+    _api "com.google.firebase:firebase-messaging:${GMS_VERSION}"
+    _api "com.google.firebase:firebase-database:${GMS_VERSION}"
+    _api "com.google.firebase:firebase-storage:${GMS_VERSION}"
+    _api "com.google.firebase:firebase-auth:${GMS_VERSION}"
+    _api "com.firebase:firebase-client-android:2.5.2"
 }
