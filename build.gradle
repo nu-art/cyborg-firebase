@@ -28,7 +28,7 @@ if (project.hasProperty("configureUploadAndroidLibArtifact")) {
 }
 
 dependencies {
-    _implementation(resolveDependency('cyborg-core', 'com.nu-art-software.cyborg', "${NU_ART_VERSION}"))
+    _api(resolveDependency('cyborg-core', 'com.nu-art-software.cyborg', "${NU_ART_VERSION}"))
     _implementation "com.google.code.gson:gson:${GSON_VERSION}"
 
     _api "com.google.firebase:firebase-core:${GMS_VERSION}"
