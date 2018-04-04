@@ -197,7 +197,7 @@ public class FirebaseModule
 	}
 
 	private void dispatchFirebaseMessageReceived(final RemoteMessage message) {
-		dispatchEvent("Dispatched firebase message", new Processor<FirebaseNotificationListener>() {
+		dispatchModuleEvent("Dispatched firebase message", new Processor<FirebaseNotificationListener>() {
 			@Override
 			public void process(FirebaseNotificationListener listener) {
 				listener.onPushMessageReceived(message);
