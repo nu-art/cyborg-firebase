@@ -39,7 +39,7 @@ import java.util.HashMap;
 
 @ModuleDescriptor
 public class FirebaseModule
-		extends CyborgModule {
+	extends CyborgModule {
 
 	private final Gson gson = new Gson();
 
@@ -228,7 +228,7 @@ public class FirebaseModule
 	}
 
 	public static class StupidService
-			extends com.google.firebase.messaging.FirebaseMessagingService {
+		extends com.google.firebase.messaging.FirebaseMessagingService {
 
 		@Override
 		public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -237,7 +237,7 @@ public class FirebaseModule
 	}
 
 	public static class AnotherStupidService
-			extends com.google.firebase.iid.FirebaseInstanceIdService {
+		extends com.google.firebase.iid.FirebaseInstanceIdService {
 
 		@Override
 		public void onTokenRefresh() {
