@@ -17,24 +17,16 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.library'
-
-android {
-    apply from: '../dev-tools/gradle/common-cyborg-lib.gradle'
-}
-
-if (project.hasProperty("addTask_DeployAndroidArtifactToCentral")) {
-    addTask_DeployAndroidArtifactToCentral("com.nu-art-software.cyborg", "nu-art")
-}
+applyAndroidLibrary("com.nu-art-software.cyborg", "nu-art")
 
 dependencies {
-    _api(resolveDependency('cyborg-core', 'com.nu-art-software.cyborg', "${NU_ART_VERSION}"))
-    _implementation "com.google.code.gson:gson:${GSON_VERSION}"
+    implementation "com.google.code.gson:gson:${GSON_VERSION}"
+    api(resolveDependency('cyborg-core', 'com.nu-art-software.cyborg', "${NU_ART_VERSION}"))
 
-    _api "com.google.firebase:firebase-core:${GMS_VERSION}"
-    _api "com.google.firebase:firebase-messaging:${GMS_VERSION}"
-    _api "com.google.firebase:firebase-database:${GMS_VERSION}"
-    _api "com.google.firebase:firebase-storage:${GMS_VERSION}"
-    _api "com.google.firebase:firebase-auth:${GMS_VERSION}"
-    _api "com.firebase:firebase-client-android:2.5.2"
+    api "com.google.firebase:firebase-core:${GMS_VERSION}"
+    api "com.google.firebase:firebase-messaging:${GMS_VERSION}"
+    api "com.google.firebase:firebase-database:${GMS_VERSION}"
+    api "com.google.firebase:firebase-storage:${GMS_VERSION}"
+    api "com.google.firebase:firebase-auth:${GMS_VERSION}"
+    api "com.firebase:firebase-client-android:2.5.2"
 }
