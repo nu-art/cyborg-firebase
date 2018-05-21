@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-applyAndroidLibrary("com.nu-art-software.cyborg", "nu-art")
+applyAndroidLibrary()
 
 dependencies {
     implementation "com.google.code.gson:gson:${GSON_VERSION}"
@@ -29,4 +29,8 @@ dependencies {
     api "com.google.firebase:firebase-storage:${GMS_VERSION}"
     api "com.google.firebase:firebase-auth:${GMS_VERSION}"
     api "com.firebase:firebase-client-android:2.5.2"
+}
+
+if (project.hasProperty("addTask_DeployAndroidArtifactToCentral")) {
+    addTask_DeployAndroidArtifactToCentral("com.nu-art-software.cyborg", "nu-art")
 }
