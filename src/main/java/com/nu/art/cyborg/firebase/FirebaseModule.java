@@ -32,8 +32,7 @@ import com.nu.art.core.generics.Processor;
 import com.nu.art.cyborg.annotations.ModuleDescriptor;
 import com.nu.art.cyborg.core.CyborgBuilder;
 import com.nu.art.cyborg.core.CyborgModule;
-import com.nu.art.cyborg.core.modules.PreferencesModule;
-import com.nu.art.cyborg.core.modules.PreferencesModule.StringPreference;
+import com.nu.art.storage.StringPreference;
 
 import java.util.HashMap;
 
@@ -95,8 +94,7 @@ public class FirebaseModule
 
 	@Override
 	protected void init() {
-		PreferencesModule preferences = getModule(PreferencesModule.class);
-		token = preferences.new StringPreference("firebase-token", null);
+		token = new StringPreference("firebase-token", null);
 		Firebase.setAndroidContext(getApplicationContext());
 	}
 
