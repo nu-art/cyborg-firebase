@@ -20,15 +20,15 @@
 applyAndroidLibrary()
 
 dependencies {
-    api "com.google.code.gson:gson:${GSON_VERSION}"
-    api(resolveDependency('cyborg-core', 'com.nu-art-software.cyborg', "${NU_ART_VERSION}"))
-    api(resolveDependency('local-storage', 'com.nu-art-software', "${NU_ART_VERSION}"))
+    implementation "com.google.code.gson:gson:${GSON_VERSION}"
+    implementation(resolveDependency('cyborg-core', 'com.nu-art-software.cyborg', "${NU_ART_VERSION}"))
+    implementation(resolveDependency('local-storage', 'com.nu-art-software', "${NU_ART_VERSION}"))
 
-    api "com.google.firebase:firebase-core:${GMS_VERSION}"
-    api "com.google.firebase:firebase-messaging:${GMS_VERSION}"
-    api "com.google.firebase:firebase-database:${GMS_VERSION}"
-    api "com.google.firebase:firebase-storage:${GMS_VERSION}"
-    api "com.google.firebase:firebase-auth:${GMS_VERSION}"
+    api "com.google.firebase:firebase-core:16.0.6"
+    api "com.google.firebase:firebase-messaging:17.3.4"
+    api "com.google.firebase:firebase-database:16.0.5"
+    api "com.google.firebase:firebase-storage:16.0.5"
+    api "com.google.firebase:firebase-auth:16.1.0"
     api "com.firebase:firebase-client-android:2.5.2"
 }
 
