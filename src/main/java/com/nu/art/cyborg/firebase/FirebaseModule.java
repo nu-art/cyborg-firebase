@@ -42,7 +42,7 @@ public class FirebaseModule
 
 	private final Gson gson = new Gson();
 
-	private StringPreference token;
+	private StringPreference token = new StringPreference("firebase-token", null);
 
 	public static class FirebaseKeyDB<Value> {
 
@@ -94,7 +94,6 @@ public class FirebaseModule
 
 	@Override
 	protected void init() {
-		token = new StringPreference("firebase-token", null);
 		Firebase.setAndroidContext(getApplicationContext());
 	}
 
