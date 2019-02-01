@@ -36,6 +36,7 @@ import com.nu.art.storage.StringPreference;
 
 import java.util.HashMap;
 
+@SuppressWarnings("unused")
 @ModuleDescriptor
 public class FirebaseModule
 	extends CyborgModule {
@@ -44,6 +45,7 @@ public class FirebaseModule
 
 	private StringPreference token = new StringPreference("firebase-token", null);
 
+	@SuppressWarnings("WeakerAccess")
 	public static class FirebaseKeyDB<Value> {
 
 		final String dbName;
@@ -189,7 +191,7 @@ public class FirebaseModule
 	}
 
 	@Override
-	protected void printModuleDetails() {
+	protected void printDetails() {
 		logInfo("Registration token: " + token.get());
 	}
 
